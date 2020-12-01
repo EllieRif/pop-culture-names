@@ -9,23 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
 library(tidyverse)
@@ -100,7 +84,7 @@ babynames %>%
 ```{r}
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
-  filter(name %in% c("Harry", "Ron", "Hermione", "Neville", "Ginny", "Luna", "Minerva")) %>%
+  filter(name %in% c("Harry", "Ron", "Hermione", "Neville", "Ginny", "Luna", "Minerva", "Bellatrix")) %>%
   filter(year>=1990) %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name)) + 
@@ -128,10 +112,41 @@ babynames %>%
 ```{r}
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
-  filter(name %in% c("Jay", "Daisy")) %>%
-  filter(year>=1910, year <= 1940) %>%
+  filter(name %in% c("Annakin", "Leia", "Luke", "Han")) %>%
+  filter(year>=1960) %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+
+```{r}
+
+babynames %>%
+  #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
+  filter(name %in% c("Nicole", "Danielle")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+
+```
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Indiana", "Marion")) %>%
+  filter(year>=1980) %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+```{r}
+babynames %>%
+  #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
+  filter(name %in% c("Buffy", "Willow", "Xander", "Angel")) %>%
+  filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
   facet_wrap(~name, scales = "free_y")
 ```
 
