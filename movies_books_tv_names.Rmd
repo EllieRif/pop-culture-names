@@ -150,3 +150,85 @@ babynames %>%
   facet_wrap(~name, scales = "free_y")
 ```
 
+```{r}
+dist_names <- babynames %>% 
+  group_by(year) %>%
+  summarise(distinct_names = n_distinct(name), total_babies = sum(n), namesperbaby = distinct_names/total_babies)
+
+dist_names %>%
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = namesperbaby))
+
+
+
+dist_names %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year,y = distinct_names))
+
+dist_names %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year,y = total_babies))
+
+babynames %>%
+  summarise(n_distinct(name))
+
+```
+
+If the number of distinct names goes down then that means there are names that were used in previous years but not in others. Do they come back? they must but that's also sort of interesting to see gaps
+
+Of 97,310 names that have been given to more than 5 babies in a given year, only 922 have been used every year since 1880, only 922 have been used every year, only 9,380 have appeared in more than 50 years
+
+
+```{r}
+girls_names <- babynames %>% 
+  filter(sex=='F') %>%
+  select(name)
+
+boys_names <- babynames %>% 
+  filter(sex=='M') %>%
+  select(name)  
+unisex_names <- intersect(boys_names, girls_names)
+```
+
+
+```{r}
+
+  
+  
+names_in_years <-babynames %>% 
+  group_by(name) %>%
+  summarise(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n)) %>%
+  filter(years_appeared >=50)
+
+
+
+names_in_years %>% 
+  filter(years_appeared==138) %>%
+  arrange(desc(total_use))
+
+names_in_years %>% 
+  ungroup() %>%
+  filter(years_appeared==138)
+
+```
+
+```{r}
+names_all_years <-babynames %>% 
+  group_by(name) %>%
+  mutate(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n)) %>%
+  ungroup() %>%
+  filter(years_appeared==138)
+
+names_all_years %>% 
+  group_by(name) %>% 
+  summarise(avg = round(mean(n), digits = 2), stddev = round(sd(n), digits = 2), fewest = min(n), most = max(n), total = sum(n)) %>%
+  arrange(desc(total))
+```
+```{r}
+names_all_years %>% 
+  filter(total_use >= 2398453) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = n, color = name))
+```
+
+
