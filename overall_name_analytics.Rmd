@@ -1,0 +1,148 @@
+---
+title: "Overall Name Analytics"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+
+```{r}
+
+library(tidyverse)
+
+library(babynames)
+
+```
+
+
+
+```{r}
+dist_names <- babynames %>% 
+  group_by(year) %>%
+  summarise(distinct_names = n_distinct(name), total_babies = sum(n), babiespername = total_babies/distinct_names)
+
+dist_names %>%
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = babiespername))
+
+
+
+dist_names %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year,y = distinct_names))
+
+dist_names %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year,y = total_babies))
+
+babynames %>%
+  summarise(n_distinct(name))
+
+```
+
+
+If the number of distinct names goes down then that means there are names that were used in previous years but not in others. Do they come back? they must but that's also sort of interesting to see gaps
+
+Of 97,310 names that have been given to more than 5 babies in a given year, only 922 have been used every year since 1880, only 922 have been used every year, only 9,380 have appeared in more than 50 years
+
+
+```{r}
+girls_names <- babynames %>% 
+  filter(sex=='F') %>%
+  select(name)
+
+boys_names <- babynames %>% 
+  filter(sex=='M') %>%
+  select(name)  
+unisex_names <- intersect(boys_names, girls_names)
+```
+
+
+```{r}
+
+  
+  
+names_in_50plus <-babynames %>% 
+  group_by(name) %>%
+  summarise(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n)) %>%
+  filter(years_appeared >=50)
+
+names_in_10to50 <-babynames %>% 
+  group_by(name) %>%
+  summarise(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n)) %>%
+  filter(years_appeared <=50, years_appeared >=10)
+
+names_in_years <-babynames %>% 
+  group_by(name) %>%
+  summarise(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n))
+
+
+names_in_10to50 %>%
+  filter(last_year <=2000) %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = last_year), bins = 100)
+
+names_in_10to50 %>%
+  filter(last_year <=2000) %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = first_year), bins = 100)
+
+names_in_50plus %>% 
+  filter(last_year <=2000) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = last_year), bins = 100)
+
+names_in_50plus %>% 
+  filter(first_year >=1900) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = first_year), bins = 100)
+
+
+names_in_years %>% 
+  filter(first_year >1880, last_year<2017) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = first_year), bins = 100)
+
+names_in_years %>% 
+  filter(first_year >1880, last_year<2016) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = last_year), bins = 100)
+
+
+```
+
+
+
+
+```{r}
+names_all_years <-babynames %>% 
+  group_by(name) %>%
+  mutate(years_appeared = n_distinct(year), first_year = min(year), last_year = max(year), total_use = sum(n)) %>%
+  ungroup() %>%
+  filter(years_appeared==138)
+
+names_all_years %>% 
+  group_by(name) %>% 
+  summarise(avg = round(mean(n), digits = 2), stddev = round(sd(n), digits = 2), fewest = min(n), most = max(n), total = sum(n)) %>%
+  arrange(desc(total))
+```
+
+```{r}
+names_all_years %>% 
+  filter(total_use >= 2398453) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = n, color = name))
+```
+
+
+
+
