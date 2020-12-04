@@ -308,7 +308,6 @@ babynames %>%
 
 ```
 ```{r}
-
 kidsnames <- c("Mason", "Penelope", "Reign", "North", "Saint", "Dream")
 
 kardashian_kids <- data.frame( 
@@ -327,6 +326,20 @@ babynames %>%
              linetype = "dashed",
              color = "red",
              data = kardashian_kids)
+```
+
+
+```{r}
+babynames %>% 
+  filter(year==2011, sex == "M") %>% 
+  arrange(desc(n))
+
+babynames %>% 
+  filter(year==2009, sex == "M") %>% 
+  arrange(desc(n))
+babynames %>% 
+  filter(year==2010, sex == "M") %>% 
+  arrange(desc(n))
 
 ```
 
