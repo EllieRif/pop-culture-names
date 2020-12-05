@@ -30,7 +30,7 @@ babynames %>%
   filter(year>=1960) %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name)) + 
-  facet_wrap(~name, scales = "free_y") + 
+  facet_grid((name~.), scales = "free_y") + 
   geom_vline(aes(xintercept = 1995), linetype = "dashed", color = "red")
 ```
 
@@ -130,19 +130,31 @@ babynames %>%
  
 
 ```{r}
+
+
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
   filter(name %in% c("Edward", "Esme", "Carlisle", "Emmett", "Alice", "Rosalie", "Jasper", "Bella")) %>%
   filter(year>=2000) %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = sex)) + 
-  facet_wrap(~name, scales = "free_y") +  
+   
   geom_vline(aes(xintercept = 2005),
              linetype = "dashed",
-             color = "red") + 
+             color = "red", ) +
     geom_vline(aes(xintercept = 2008),
              linetype = "dashed",
-             color = "navy")
+             color = "navy",
+             ) +
+  #geom_text(x=2005, y = -Inf, label = "Book", size = 4, vjust = "bottom", hjust = "right") +
+  
+  #annotate("text", xmin = 2007, x = 2009, y = -Inf, label = "Movie", size = 4) +
+  #annotate("text", x = 2004, xmax = 2006, y = -Inf, label = "Book", size = 4) +
+  coord_cartesian (clip = "off") + 
+  theme(panel.spacing = unit(1, "lines")) + 
+  geom_text(x=2005, y = -Inf, label = "Book", size = 4, y_nudge = -5) +
+  facet_wrap(~name, scales = "free_y")
+
 ```
 ```{r}
 babynames %>%

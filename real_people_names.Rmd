@@ -1,0 +1,398 @@
+---
+title: "names and pop culture"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+
+```{r}
+library(tidyverse)
+```
+```{r}
+library(babynames)
+
+```
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Kim", "Khloe", "Kris", "Kylie", "Kendall", "Kourtney")) %>%
+  filter(year>=1980, sex == "F") %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") +  geom_vline(aes(xintercept = 2007),
+             linetype = "dashed",
+             color = "red")
+
+```
+
+```{r}
+
+kidsnames <- c("Mason", "Penelope", "Reign", "North", "Saint", "Dream")
+
+kardashian_kids <- data.frame( 
+  name = kidsnames, year = c(2009, 2012, 2014, 2013, 2015, 2016)
+  
+  )
+
+babynames %>%
+  filter(name %in% kidsnames) %>%
+  filter(year>=2000) %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") +  
+  
+    geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = kardashian_kids)
+
+```
+
+```{r}
+curry_names <- c("Ayesha", "Riley", "Ryan")
+
+curry_family <- data.frame(
+  
+  name = curry_names, 
+  year = c(2011, 2012, 2015)
+  
+)
+
+babynames %>%
+  filter(name %in% curry_names) %>%
+  filter(year>=2000, sex=="F") %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") +  
+  
+  geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = curry_family)
+
+```
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Sasha", "Malia", "Michelle", "Barack")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2008),
+             linetype = "dashed",
+             color = "red")
+
+```
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Meryl")) %>%
+  filter(year>=1949) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1979),
+             linetype = "dashed",
+             color = "red")
+
+```
+```{r}
+
+hoffman_movies <- data.frame(
+  
+  title = c("1967 \n (The Graduate Released) \n", "1969  \n (Midnight Cowboy Released) \n", "1976 \n (All The Presidents Men Released) \n", "1979 \n (Kramer vs. Kramer Released) \n"),
+  year = c(1967, 1969, 1976, 1979)
+)
+
+babynames %>%
+  filter(name %in% c("Dustin")) %>%
+  filter(year>=1949, sex == "M") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  geom_vline(aes(xintercept = year, color = title), linetype = "dashed", data = hoffman_movies, size = 1)
+  
+  #legend(horiz = TRUE, title = "Movie")
+  
+  # geom_vline(aes(xintercept = 1967),
+  #            linetype = "dashed",
+  #            color = "navy") + 
+  #   geom_vline(aes(xintercept = 1969),
+  #            linetype = "dashed",
+  #            color = "red") + 
+  #   geom_vline(aes(xintercept = 1976),
+  #            linetype = "dashed",
+  #            color = "green") + 
+  #   geom_vline(aes(xintercept = 1979),
+  #            linetype = "dashed",
+  #            color = "red")
+```
+```{r}
+winslet <- data.frame (
+  
+  name = c("Kate","Kate", "Sabrina"),
+  year = c(1997, 1995, 1996)
+)
+babynames %>%
+  filter(name %in% c("Farrah", "Kate", "Jaclyn", "Charlie", "Sabrina", "Jill", "Kelly", "Jacqueline")) %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy") +
+  
+    geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = winslet)
+  
+```
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Ilsa", "Ingrid")) %>%
+  filter(year>=1920) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1942),
+             linetype = "dashed",
+             color = "navy")
+  
+  
+
+```
+
+```{r}
+names60s <- c("Maggie", "Julie", "Julie", "Barbra")
+
+actresses60s <- data.frame(
+  
+  name = names60s, 
+  
+  year = c(1969, 1957, 1964, 1963)
+  
+)
+
+
+babynames %>%
+  filter(name %in% c("Maggie", "Julie", "Barbra")) %>%
+  filter(year>=1940) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_grid((name~.), scales = "free_y") + 
+  geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = actresses60s)
+  
+
+#1969, 1958, 1964, 1968
+
+```
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Rex", "Elton", "Fred")) %>%
+  #filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+
+```{r}
+babynames %>%
+  filter(name %in% c("Audrey", "Grace")) %>%
+  filter(year>=1930) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1953),
+             linetype = "dashed",
+             color = "navy")
+  
+
+#1953, 1956, 1954, 1943
+
+```
+```{r}
+names40s <- c("Vivien", "Vivian", "Judy", "Katharine", "Katherine", "Catherine")
+
+actresses40s <- data.frame(
+  
+  name = names40s,
+  
+  year = c(1939, 1939, 1939, 1933, 1933, 1932)
+)
+
+
+babynames %>%
+  filter(name %in% names40s) %>%
+  filter(year>=1920, year <= 1965, sex=="F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = actresses40s)
+
+#1939, 1951, 1940, 1939, 1932, 1943
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Reese", "Drew", "Demi", "Natalie", "Halle", "Halley", "Selena", "Miley", "Mila", "Ashton", "Emma", "Cameron" )) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+
+#Check Carrie Elsewhere
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Serena", "Blair", "Blaire", "Blake", "Leighton","Dan", "Penn" )) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+
+```{r}
+babynames %>%
+  filter(name %in% c("Lorelai", "Rory")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2000),
+             linetype = "dashed",
+             color = "navy")
+  
+  
+```
+
+
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Clark", "Spencer", "Gregory", "Laurence")) %>%
+  filter(year>=1920, year <=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Humphrey", "Marlon", "Charlton")) %>%
+  filter(year>=1935) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_grid((name~.), scales = "free_y")
+```
+
+```{r}
+babynames %>%
+  filter(name %in% c("Richard", "Rex")) %>%
+  filter(year>=1930, year <= 1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Ronald", "Dwight", "Woodrow", "Franklin")) %>%
+  filter(year>=1920) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y")
+
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Ally", "Calista", "Portia")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Blake", "James" )) %>%
+  filter(year>=1990, sex=="F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 2014),
+             linetype = "dashed",
+             color = "navy")
+```
+
+```{r}
+babynames %>%
+  filter(name %in% c("Reese", "Elle", "June", "Joaquin", "Johnny" )) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 2005),
+             linetype = "dashed",
+             color = "navy")
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Demi", "Ashton", "Mila" )) %>%
+  filter(year>=1970) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = c(1998)),
+             linetype = "dashed",
+             color = "navy")
+
+```
+
