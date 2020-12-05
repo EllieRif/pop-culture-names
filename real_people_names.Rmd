@@ -279,6 +279,58 @@ babynames %>%
 
 #1939, 1951, 1940, 1939, 1932, 1943
 ```
+
+```{r}
+
+names40s <- c( "Katharine", "Katherine", "Catherine", "Kathryn")
+
+# actresses40s <- data.frame(
+#   
+#   name = names40s,
+#   
+#   year = c(1939, 1939, 1939, 1933, 1933, 1932)
+# )
+
+yr <- data.frame(
+year = c(1932, 1935, 1940, 1942, 1951, 1955, 1956, 1959, 1962, 1967, 1968, 1973, 1981)
+)
+
+babynames %>%
+  filter(name %in% names40s) %>%
+  filter(year>=1925, year <=1980, sex=="F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_grid((name~.), scales = "free_y") 
+    # geom_vline(aes(xintercept = year),
+    #          linetype = "dashed",
+    #          color = "red",
+    #          data = yr)
+
+```
+```{r}
+#popnames40s <- c("Mary", "Linda", "Barbara", "Patricia", "Carol", "Sandra")
+#popnames40s <- c("Deborah", "Sarah", "Barbara", "Elaine", "Doris")
+
+popnames40s <- c("Patricia", "Carol", "Sandra")
+
+babynames %>%
+  filter(name %in% popnames40s) %>%
+  filter(year>=1925, year <=1980, sex=="F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_grid((name~.), scales = "free_y") 
+```
+
+
+
+
+```{r}
+babynames %>% 
+  filter(name %in% c("Katharine", "Catherine", "Katherine"), year >=1925, year <=1945, sex =="F") %>% 
+  arrange(name)
+```
+
+
 ```{r}
 babynames %>%
   filter(name %in% c("Reese", "Drew", "Demi", "Natalie", "Halle", "Halley", "Selena", "Miley", "Mila", "Ashton", "Emma", "Cameron" )) %>%
@@ -291,7 +343,7 @@ babynames %>%
 ```
 ```{r}
 babynames %>%
-  filter(name %in% c("Serena", "Blair", "Blaire", "Blake", "Leighton","Dan", "Penn" )) %>%
+  filter(name %in% c("Serena", "Blair", "Blaire", "Blake", "Leighton", "Penn" )) %>%
   filter(year>=1990) %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = sex)) + 
