@@ -441,7 +441,7 @@ babynames %>%
 ```
 ```{r}
 
-bewitched <- c("Samantha", "Darren", "Andora", "Tabitha")
+bewitched <- c("Samantha", "Darren", "Endora", "Tabitha")
 
 
 babynames %>%
@@ -458,6 +458,37 @@ babynames %>%
 
 
 ```
+```{r}
+
+bewitched <- c("Samantha", "Darren", "Endora", "Tabitha")
+
+
+babynames %>%
+  filter(name == "Samantha") %>%
+  #filter(year>=1940) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1964),
+             linetype = "dashed",
+             color = "red",
+             )
+  babynames %>% 
+    filter(name == "Samantha", year >=1960)
+  
+  babynames %>% 
+    filter(name == "Samantha", year<1964, sex == "F") %>% 
+    summarise (mn = mean(n))
+  
+    babynames %>% 
+    filter(name == "Samantha", year<1964, year>1953, sex == "F") %>% 
+    summarise (mn = mean(n))
+  
+  
+
+```
+
+
 
 ```{r}
 babynames %>%

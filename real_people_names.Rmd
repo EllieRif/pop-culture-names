@@ -307,6 +307,25 @@ babynames %>%
     #          data = yr)
 
 ```
+
+
+
+```{r}
+babynames %>%
+  filter(name %in% names40s) %>%
+  #filter(year>=1980, sex=="F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_grid((name~.), scales = "free_y") 
+    # geom_vline(aes(xintercept = year),
+    #          linetype = "dashed",
+    #          color = "red",
+    #          data = yr)
+```
+
+
+
+
 ```{r}
 #popnames40s <- c("Mary", "Linda", "Barbara", "Patricia", "Carol", "Sandra")
 #popnames40s <- c("Deborah", "Sarah", "Barbara", "Elaine", "Doris")
@@ -431,7 +450,7 @@ babynames %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = sex)) + 
   facet_wrap(~name, scales = "free_y") + 
-    geom_vline(aes(xintercept = 2005),
+    geom_vline(aes(xintercept = 1998),
              linetype = "dashed",
              color = "navy")
 ```
