@@ -1,0 +1,1018 @@
+---
+title: "writeup_pt2"
+output: html_document
+---
+# # RMarkdown
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Library Import
+
+```{r}
+library(tidyverse)
+library(babynames)
+
+```
+# # Splash
+#Madison Charts
+```{r}
+
+babynames %>%
+  filter(name == "Madison", sex=="F") %>%
+  #filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) +
+  labs(title = "Girls Named Madison", subtitle = "Splash was released in 1983", y = "babies") +
+    geom_vline(aes(xintercept = 1983),
+             linetype = "dashed",
+             color = "red",
+             size = 1)
+  ggsave("madisongirls.png")
+
+
+babynames %>%
+  #filter(name %in% c("Daryl")) %>%
+  filter(name == "Madison", sex=="M") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) +
+    geom_vline(aes(xintercept = 1983),
+             linetype = "dashed",
+             color = "red",
+             size = 1) + 
+  labs(title = "Boys Named Madison", subtitle = "Splash was released in 1983", y = "babies")
+ggsave("madisonboys.png")
+
+
+
+
+  
+```
+
+
+#Madison Calculations
+
+```{r}
+mad_pre_splash <- babynames %>% 
+  filter(name == "Madison", sex == "F", year < 1984) %>% 
+  summarise(use = sum(n), avg = mean(n))
+
+mad_pre_splash
+
+mad_splash_to_90 <- babynames %>% 
+  filter(name == "Madison", sex == "F", year >= 1984, year <1990) %>%
+  group_by(year) %>% 
+  summarise(use = sum(n))
+
+mad_splash_to_90
+
+mad_to_90_total <- 
+  mad_splash_to_90 %>% 
+  summarise(total = sum(use))
+
+mad_to_90_total
+
+mad_splash_to_present <- babynames %>% 
+  filter(name == "Madison", sex == "F", year >= 1984)
+  #group_by(year) 
+  #summarise(use = sum(n))
+
+mad_splash_to_present
+
+avg_boys_mad_up_to_splash <- babynames %>% 
+  filter(name == "Madison", sex=="M", year <1984) %>%
+  summarise(avg = mean(n))
+
+avg_boys_mad_postsplash <- babynames %>% 
+  filter(name == "Madison", sex=="M", year >=1984) %>%
+  summarise(avg = mean(n))
+```
+
+# # Bewitched
+
+```{r}
+bewitched <- c("Samantha", "Darren", "Endora", "Tabitha")
+
+bw_adult <- data.frame(
+  
+  name = c("Samantha", "Darren", "Endora"),
+  year = c(1964, 1964, 1964)
+  
+)
+
+bw_baby <- data.frame(
+  name = "Tabitha",
+  year = 1966
+  
+)
+
+
+babynames %>%
+  filter(name %in% bewitched) %>%
+  filter(year>=1940) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = bw_adult,
+             size = 1
+             ) + 
+  geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "navy",
+             data = bw_baby,
+             size = 1
+             ) 
+  labs(title = "Bewitched", subtitle = "Bewitched began airing in 1964, Tabitha was born in 1966", y = "babies")
+
+ggsave("bewitched.png")
+```
+
+# # Twilight
+
+```{r}
+
+
+babynames %>%
+  filter(name %in% c("Edward", "Esme", "Carlisle", "Emmett", "Alice", "Rosalie", "Jasper", "Bella")) %>%
+  filter(year>=2000) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+   
+  geom_vline(aes(xintercept = 2005),
+             linetype = "dashed",
+             color = "red", ) +
+    geom_vline(aes(xintercept = 2008),
+             linetype = "dashed",
+             color = "navy",
+             ) +
+  facet_wrap(~name, scales = "free_y") + 
+  labs(title = "Twilight Series", subtitle = "The first Twilight book was released in 2005; the first movie came out in 2008", y = "babies")
+
+ggsave("twilight.png")
+
+```
+
+
+# # Harry Potter
+
+# Book 1 
+
+```{r}
+#Book/Movie one
+
+hp1_yrs <- data.frame(
+  
+  release = c("Book Release", "Movie Release"),
+  
+  yr = c(1997, 2001)
+  
+)
+
+book1names <- c("Harry", "Ron", "Hermione", "Neville", "Minerva", "Draco")
+
+babynames %>%
+  filter(name %in% book1names) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x = year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = yr, color = release),
+             linetype="dashed",
+             data = hp1_yrs, 
+             size = 1) + 
+  labs(title = "Harry Potter and the Sorcerer's Stone", subtitle = "Harry, Ron, Hermione, Neville, and Minerva McGonnagall are all introduced", y="babies")
+
+ggsave("hp1.png")
+
+
+
+```
+# Book 3
+```{r}
+#Hp 3
+hp3_yrs <- data.frame(
+  
+  release = c("Book Release", "Movie Release"),
+  
+  yr = c(1999, 2004)
+  
+)
+
+book3names <- c("Sirius")
+
+babynames %>%
+  filter(name %in% book3names) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x = year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = yr, color = release),
+             linetype="dashed",
+             data = hp3_yrs, 
+             size = 1) + 
+  labs(title = "Harry Potter and the Prisoner of Azkaban", subtitle = "Sirius Black is introduced", y= "babies")
+ggsave("hp3.png")
+
+
+
+```
+
+#Book 5 
+
+```{r}
+#hp 5 
+hp5_yrs <- data.frame(
+  
+  release = c("Book Release", "Movie Release"),
+  
+  yr = c(2003, 2007)
+  
+)
+
+book5names <- c("Ginny", "Bellatrix", "Luna")
+
+babynames %>%
+  filter(name %in% book5names) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x = year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = yr, color = release),
+             linetype="dashed",
+             data = hp3_yrs, 
+             size = 1) + 
+  labs(title = "Harry Potter and the Order of the Phoenix", subtitle = "Luna and Bellatrix are introduced, Ginny takes on a prominent role", y = "babies")
+
+ggsave("hp5.png")
+
+#number of # in outer markdown creates heriarchy for headings
+```
+
+# Book 7
+
+```{r}
+
+hp7_yrs <- data.frame(
+  
+  release = c("Book Release", "Movie Release"),
+  
+  yr = c(2007, 2011)
+  
+)
+
+book7names <- c("Severus")
+
+babynames %>%
+  filter(name %in% book7names) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x = year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = yr, color = release),
+             linetype="dashed",
+             data = hp7_yrs, 
+             size = 1) + 
+  labs(title = "Harry Potter and the Deathly Hallows", subtitle = "Severus Snape turns out to be good", y = "babies")
+
+ggsave("hp7.png")
+
+```
+
+
+# # 50 Shades
+
+```{r}
+babynames %>%
+  filter(name %in% c("Christian", "Anastasia")) %>%
+  filter(year>=2000) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2011),
+             linetype = "dashed",
+             color = "red",
+             size = 1) + 
+    geom_vline(aes(xintercept = 2015),
+             linetype = "dashed",
+             color = "navy",
+             size = 1) + 
+  labs(title = "50 Shades of Gray", subtitle = "The first book came out in 2011; the first movie was released in 2015", y = "babies")
+
+ggsave("50shades.png")
+```
+
+
+# # Friends
+
+```{r}
+
+names <- c("Chandler", "Monica", "Ross", "Rachel", "Phoebe", "Joey", "Monica")
+important_dates <- data.frame(
+  name=names,
+  year=c(1994, 1994, 1994, 1994, 1994, 1994, 1998),
+  update= c("Friends First Airs","Friends First Airs", "Friends First Airs", "Friends First Airs","Friends First Airs", "Friends First Airs", "Scandal Breaks" )
+)
+babynames %>%
+  filter(name %in% names) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, fill = sex), color = "black", stroke = 0.2, size = 1.5, shape = 21) + 
+  facet_wrap(~name, scales = "free_y") +
+  geom_vline(aes(xintercept = year, color = update),
+             linetype="dashed",
+             data = important_dates,
+             size = 1) + 
+  labs (title = "Friends", subtitle = "Friends began airing in 1994; the Lewinsky-Clinton Scandal broke in 1998", y = "babies")
+
+ggsave("friends.png")
+
+```
+
+# # Kardashians
+
+# First Gen
+
+```{r}
+babynames %>%
+  filter(name %in% c("Kim", "Khloe", "Kris", "Kylie", "Kendall", "Kourtney")) %>%
+  filter(year>=1980, sex == "F") %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") +  geom_vline(aes(xintercept = 2007),
+             linetype = "dashed",
+             color = "red",
+             size = 1) + 
+  labs(title = "Kardashian Family", subtitle = "Keeping Up with the Kardashians began airing in 2007", y = "babies")
+
+ggsave("dash1stgen.png")
+
+```
+
+# Kourtney Khloe
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Chloe", "Khloe")) %>%
+  filter(year>=1990, sex == "F") %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name))
+
+ggsave("CKhloe.png")
+
+
+babynames %>%
+  filter(name %in% c("Courtney", "Kourtney")) %>%
+  filter(year>=1990, sex=="F") %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name))
+
+ggsave("CKourtney.png")
+
+```
+
+# Next Gen
+
+
+```{r}
+kidsnames <- c("Mason", "Penelope", "Reign", "North", "Saint", "Dream")
+
+kardashian_kids <- data.frame( 
+  name = kidsnames, year = c(2009, 2012, 2014, 2013, 2015, 2016)
+  
+  )
+
+babynames %>%
+  filter(name %in% kidsnames) %>%
+  filter(year>=2000) %>% 
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") +  
+  
+    geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = kardashian_kids,
+             size = 1) + 
+  labs(title = "Kardashian Children Born Before 2017", subtitle = "Vertical line denotes birth years", y = "babies")
+
+ggsave("dash2ndgen.png")
+```
+
+# # Charlie's Angels
+
+# All
+```{r}
+winslet <- data.frame (
+  
+  name = c("Kate","Kate", "Sabrina"),
+  year = c(1997, 1995, 1996)
+)
+babynames %>%
+  filter(name %in% c("Farrah", "Kate", "Jaclyn", "Charlie", "Sabrina", "Jill", "Kelly", "Jacqueline")) %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy") +
+  
+    geom_vline(aes(xintercept = year),
+             linetype = "dashed",
+             color = "red",
+             data = winslet)
+  
+```
+
+#Charlie
+
+```{r}
+
+babynames %>%
+  filter(name == "Charlie", sex == "M") %>%
+  filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "red") + 
+    labs(title = "Boys Named Charlie: Charlie's Angels", subtitle = "Charlie's Angels premiered in 1976", y = "babies")
+
+```
+
+# Characters
+
+```{r}
+
+babynames %>%
+  filter(name %in% c( "Sabrina", "Jill", "Kelly")) %>%
+  filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy")
+
+
+babynames %>%
+  filter(name %in% c( "Jill"), sex == "F") %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy") + 
+      labs(title = "Girls Named Jill: Charlie's Angels", subtitle = "Charlie's Angels premiered in 1976", y = "babies")
+
+spellman <- data.frame (
+  
+  year = c(1976, 1996),
+  release = c("1976 \n Sabrina Duncan \n", "1996 \n Sabrina Spellman \n" )
+  
+)
+
+babynames %>%
+  filter(name %in% c( "Sabrina")) %>%
+  filter(year>=1950, sex == "F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = release),
+             linetype = "dashed",
+             data = spellman,
+             size = 1) + 
+   labs(title = "Girls Named Sabrina: Charlie's Angels and Other Influences", subtitle = "Charlie's Angels premiered in 1976; Sabrina the Teenage Witch premiered in 1996", y = "babies")
+  
+
+
+
+babynames %>%
+  filter(name %in% c( "Kelly")) %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy")
+```
+
+
+
+
+
+# Actresses 
+
+```{r}
+babynames %>%
+  filter(name %in% c( "Farrah")) %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 1976),
+             linetype = "dashed",
+             color = "navy") + 
+  geom_vline(aes(xintercept = 1996),
+             linetype = "dashed",
+             color = "red") + 
+   labs(title = "Girls Named Farrah: Charlie's Angels", subtitle = "Farrah Fawcett starred in Charlie's Angels from 1976 - 1977", y = "babies")
+
+winslet <- data.frame (
+  
+  #name = c("Kate","Kate", "Kate"),
+  year = c(1976, 1995, 1997),
+  title = c("1976 \n (Kate Jackson in Charlie's Angels) \n", "1995  \n (Kate Winslet in Sense and Sensibility) \n", "1997 \n (Kate Winslet in Titanic) \n")
+)
+
+
+babynames %>%
+  filter(name %in% c( "Kate"), sex == "F") %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = title),
+             linetype = "dashed",
+             data = winslet,
+             size = 1) + 
+   labs(title = "Girls Named Kate: Charlie's Angels and Other Influences", subtitle = "Kate Jackson and Kate Winslet", y = "babies")
+
+
+jackieo <- data.frame(
+  #name = c("Jacqueline", "Jacqueline", "Jaclyn"),
+  year = c(1960, 1976),
+  title = c("1960 \n Jackie Kennedy \n becomes First Lady \n", "1976 \n Jaclyn Smith  \n stars in Charlie's Angels \n" )
+  
+)
+
+babynames %>%
+  filter(name %in% c( "Jaclyn", "Jacqueline")) %>%
+  filter(year>=1950, sex == "F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = title),
+             linetype = "dashed",
+             data = jackieo,
+             size = 1) + 
+  labs(title = "Girls Named Jaclyn or Jacqueline: Charlie's Angels and Other Influences", subtitle = "Jaclyn Smith and Jackie Kennedy", y = "babies")
+
+
+
+
+```
+# Full Names and Nicknames
+
+```{r}
+babynames %>%
+  filter(name %in% c( "Jackie")) %>%
+  filter(year>=1950, sex == "F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = title),
+             linetype = "dashed",
+             data = jackieo,
+             size = 1) + 
+  labs(title = "Nickname: Jackie", subtitle = "Jaclyn Smith and Jackie Kennedy", y = "babies")
+
+
+babynames %>%
+  filter(name %in% c( "Catherine"), sex == "F") %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = title),
+             linetype = "dashed",
+             data = winslet,
+             size = 1) + 
+   labs(title = "Full Name: Catherine", subtitle = "Kate Jackson and Kate Winslet", y = "babies")
+
+
+babynames %>%
+  filter(name %in% c( "Katherine"), sex == "F") %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = title),
+             linetype = "dashed",
+             data = winslet,
+             size = 1) + 
+   labs(title = "Full Name: Katherine", subtitle = "Kate Jackson and Kate Winslet", y = "babies")
+
+  
+```
+
+
+# # Reese Witherspoon
+
+# Actress
+
+```{r}
+reese <- data.frame(
+  year = c(1999, 2001, 2005),
+  movie = c("1999 \n Cruel Intentions \n", "2001 \n Legally Blonde \n", "2005 \n Walk The Line \n ")
+  
+)
+
+
+babynames %>%
+  filter(name %in% c("Reese")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+   
+  #facet_wrap(~sex, scales = "free_y") + 
+    geom_vline(aes(xintercept = year, color = movie),
+             linetype = "dashed",
+             size = 1,
+             data = reese) + 
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+     labs(title = "Babies Named Reese: Reese Witherspoon's Influence", y = "babies")
+
+```
+
+#Characters
+
+```{r}
+
+reese_chars <- data.frame(
+  name = c("Elle", "June"),
+  year = c(2001, 2005),
+  movie = c("2001 \n Elle In Legally Blonde \n", "2005 \n June in Walk The Line \n ")
+  
+)
+babynames %>%
+  filter(name %in% c("Elle", "June" ), sex == "F") %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = year, color = movie),
+             linetype = "dashed",
+             size = 1,
+             data = reese_chars) + 
+     labs(title = "Girls Named Elle and June: Reese Witherspoon's Influence", subtitle = "Elle Woods in Legally Blonde and June Carter in Walk the Line ", y = "babies")
+
+
+babynames %>% 
+  filter(name == "Annette", year>1985)
+#Not enough movement for causality with Annette
+   
+```
+
+# Costars
+
+```{r}
+joaquin <- data.frame(
+  name = c("Joaquin", "Joaquin", "Johnny"),
+  
+  year = c(2000, 2005, 2005),
+  movie = c("2000 \n Gladiator \n", "2005 \n Walk The Line \n", "2005 \n Walk The Line \n")
+  
+  
+)
+
+  
+babynames %>%
+  filter(name %in% c("Joaquin", "Johnny"), sex == "M") %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = year, color = movie),
+             linetype = "dashed",
+             size = 1,
+             data = joaquin
+             
+          )
+
+babynames %>%
+  filter(name %in% c("Sebastian", "Ryan")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1999),
+             linetype = "dashed",
+             size = 1
+          )
+
+babynames %>%
+  filter(name %in% c("Matthew", "Warner", "Emmett", "Luke")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2001),
+             linetype = "dashed",
+             size = 1
+          )
+```
+
+# # Casablanca
+
+#Women 
+```{r}
+
+babynames %>%
+  filter(name %in% c("Ilsa", "Ingrid")) %>%
+  filter(year>=1920) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1942),
+             linetype = "dashed",
+             color = "navy")
+  
+  
+
+```
+# Men
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Rick", "Richard")) %>%
+  
+  filter(sex == "M") %>% 
+  filter(year>=1920, year <=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1942),
+             linetype = "dashed",
+             color = "navy")
+  
+
+babynames %>% 
+  filter(name == "Richard", year > 1935, sex == "M")
+```
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Humphrey")) %>%
+  
+  filter(sex == "M") %>% 
+  filter(year>=1920, year <=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1942),
+             linetype = "dashed",
+             color = "navy")
+```
+
+
+
+# # Buffy
+
+```{r}
+
+#According to https://ohbabynames.com/all-baby-names/xander/, "Xander did not appear on the U.S. popularity charts as an independently given name until 1999"
+babynames %>%
+  filter(name %in% c("Buffy", "Willow", "Xander", "Angel", "Drusilla")) %>%
+  filter(year>=1960) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "red", 
+             size = 1) +
+  geom_vline(aes(xintercept = 2003),
+             linetype = "dashed",
+             color = "navy", 
+             size = 1) + 
+  labs(title = "Buffy the Vampire Slayer", subtitle = "The show began airing in 1997 and ended 2003", y = "babies")
+# babynames %>% 
+#   filter(name=="Buffy")
+
+ggsave("buffy.png")
+
+  
+```
+
+
+# # Disney
+
+#Princesses
+
+```{r}
+princess_names <- c("Ariel", "Belle", "Jasmine", "Mulan", "Tiana", "Merida", "Elsa", "Giselle")
+
+
+
+princess_yrs <- data.frame(
+  name = princess_names, 
+  
+  year = c(1989, 1991, 1992, 1998, 2009, 2012, 2013, 2007),
+  
+  release = c("Little Mermaid \n", "Beauty and \n the Beast \n", "Aladdin \n", "Mulan \n", "Princess and \n the Frog \n", "Brave \n", "Frozen \n", "Enchanted \n")
+)
+
+
+babynames %>%
+  filter(name %in% princess_names, sex == "F") %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = year, color = release),
+             linetype="dashed",
+             data = princess_yrs,
+             size = 1) + 
+  labs(title = "Disney Princesses", subtitle = "Vertical Line Marks Film's Release", y = "babies")
+
+ggsave("disneyprincesses.png")
+  
+```
+
+
+# Princes
+
+```{r}
+prince_names <- c("Eric", "Adam", "Aladdin", "Shang", "Naveen", "Kristoff", "Flynn") 
+
+prince_yrs <- data.frame(
+  name = prince_names, 
+  
+  year = c(1989, 1991, 1992, 1998, 2009, 2013, 2010),
+  
+  release = c("Little Mermaid \n", "Beauty and \n the Beast \n", "Aladdin \n", "Mulan \n", "Princess and \n the Frog \n", "Frozen \n", "Tangled \n")
+  
+  
+)
+
+babynames %>%
+  filter(name %in% prince_names, sex == "M") %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = year, color = release),
+             linetype="dashed",
+             size = 1,
+             data = prince_yrs) + 
+  labs(title = "Disney Princes", subtitle = "Vertical Line Marks Film's Release", y = "babies")
+
+ggsave("disneyprinces.png")
+```
+
+
+
+# # Kramer vs Kramer
+
+# Dustin
+
+```{r}
+hoffman_movies <- data.frame(
+  
+  title = c("1967 \n (The Graduate Released) \n", "1969  \n (Midnight Cowboy Released) \n", "1976 \n (All The Presidents Men Released) \n", "1979 \n (Kramer vs. Kramer Released) \n"),
+  year = c(1967, 1969, 1976, 1979)
+)
+
+babynames %>%
+  filter(name %in% c("Dustin")) %>%
+  filter(year>=1949, sex == "M") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) + 
+  geom_vline(aes(xintercept = year, color = title), linetype = "dashed", data = hoffman_movies, size = 1)
+
+```
+
+
+# Meryl
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Meryl")) %>%
+  filter(year>=1949) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1979),
+             linetype = "dashed",
+             color = "red")
+
+```
+```{r}
+
+babynames %>%
+  filter(name %in% c("Ted")) %>%
+  filter(year>=1949) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1979),
+             linetype = "dashed",
+             color = "red")
+
+babynames %>%
+  filter(name %in% c("Joanna")) %>%
+  filter(year>=1949) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1979),
+             linetype = "dashed",
+             color = "red")
+
+```
+# # # On further thought, Unlikely to unclude these in the writeup
+
+
+# # Gossip Girl
+
+# Characters
+
+```{r}
+babynames %>%
+  filter(name %in% c("Serena", "Blair", "Blaire", "Dan", "Chuck", "Nate" )) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+    geom_vline(aes(xintercept = 2007),
+             linetype = "dashed",
+             color = "red")
+```
+
+# Actors
+
+```{r}
+babynames %>%
+  filter(name %in% c("Blake", "Leighton", "Penn", "Chace", "Chase")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2007),
+             linetype = "dashed",
+             color = "red")
+```
+```{r}
+babynames %>%
+  filter(name %in% c("Serena")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~sex, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2007),
+             linetype = "dashed",
+             color = "red") + 
+  geom_vline(aes(xintercept = 2011),
+             linetype = "dashed",
+             color = "red")
+  
+```
+
+# # Gilmore Girls
+
+```{r}
+babynames %>%
+  filter(name %in% c("Lorelai", "Rory")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2000),
+             linetype = "dashed",
+             color = "navy")
+  
+  
+```
+# # Random Tests, Checks, and Numbers
+
+```{r}
+babynames %>%
+  filter(name %in% c("Luna")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2003),
+             linetype = "dashed",
+             color = "navy")
+
+
+babynames %>% 
+  filter(name == "Luna" | name == "Bellatrix", year >=2000, sex == "F")
+
+```
+
+
+
+

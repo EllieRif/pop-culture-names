@@ -178,6 +178,7 @@ babynames %>%
              linetype = "dashed",
              color = "navy")
 ```
+# # 50 shades
 ```{r}
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
@@ -193,7 +194,7 @@ babynames %>%
              linetype = "dashed",
              color = "navy")
 ```
-
+# # Star Wars
 ```{r}
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
@@ -206,7 +207,7 @@ babynames %>%
              linetype = "dashed",
              color = "red")
 ```
-
+# # Splash
 ```{r}
 
 babynames %>%
@@ -253,7 +254,7 @@ avg_boys_mad_postsplash <- babynames %>%
   
   
 ```
-
+# # Indy
 
 ```{r}
 babynames %>%
@@ -263,6 +264,9 @@ babynames %>%
   geom_point(mapping = aes( x=year, y = n, color = sex)) + 
   facet_wrap(~name, scales = "free_y")
 ```
+
+# # Buffy
+
 ```{r}
 
 #According to https://ohbabynames.com/all-baby-names/xander/, "Xander did not appear on the U.S. popularity charts as an independently given name until 1999"
@@ -307,6 +311,7 @@ babynames %>%
 
 
 
+# # Friends
 
 ```{r}
 
@@ -353,7 +358,7 @@ babynames %>%
 
 ```
 
-
+# # Kardashians
 ```{r}
 babynames %>%
   filter(name %in% c("Kim", "Khloe", "Kris", "Kylie", "Kendall", "Kourtney")) %>%
@@ -415,7 +420,7 @@ babynames %>%
              data = kardashian_kids)
 
 ```
-
+# # Curry (which should bin the other sheet)
 ```{r}
 curry_names <- c("Ayesha", "Riley", "Ryan")
 
@@ -439,6 +444,9 @@ babynames %>%
              data = curry_family)
 
 ```
+#Bewitched
+
+
 ```{r}
 
 bewitched <- c("Samantha", "Darren", "Endora", "Tabitha")
@@ -574,6 +582,28 @@ babynames %>%
   
 
 ```
+
+
+
+```{r}
+
+babynames %>%
+  filter(name %in% c("Rick", "Richard")) %>%
+  
+  filter(sex == "M") %>% 
+  #filter(year>=1920, year <=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = name)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1942),
+             linetype = "dashed",
+             color = "navy")
+  
+
+
+```
+
+
 
 ```{r}
 names60s <- c("Maggie", "Julie", "Julie", "Barbra")
@@ -788,4 +818,40 @@ babynames %>%
              color = "navy")
 
 ```
+```{r}
+
+babynames %>%
+  filter(name %in% c("Isabella", "Bella")) %>%
+  filter(year>=1990) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 2008),
+             linetype = "dashed",
+             color = "red")
+
+babynames %>%
+  filter(name %in% c("Isabella")) %>%
+  filter(year>=1990, sex=="F")
+
+```
+
+
+```{r}
+babynames %>%
+  filter(name %in% c("Arthur", "Lance")) %>%
+  filter(year>=1900) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1938),
+             linetype = "dashed",
+             color = "red")
+
+babynames %>%
+  filter(name %in% c("Isabella")) %>%
+  filter(year>=1990, sex=="F")
+
+```
+
 

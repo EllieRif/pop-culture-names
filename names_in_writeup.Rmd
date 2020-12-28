@@ -50,9 +50,27 @@ babynames %>%
              linetype="dashed",
              data = princess_yrs,
              size = 1) + 
-  labs(title = "Disney Princesses", subtitle = "Vertical Line Marks Film's Release")
+  labs(title = "Disney Princesses", subtitle = "Vertical Line Marks Film's Release", y = "babies")
+
+ggsave("disneyprincesses.png")
   
 ```
+
+
+
+
+
+
+
+```{r}
+babynames %>% 
+  filter(name == "Belle", sex == "F", year >1980) %>% 
+  ggplot() + 
+  geom_point(mapping = aes(x = year, y = n))
+```
+
+
+
 ```{r}
 prince_names <- c("Eric", "Adam", "Aladdin", "Shang", "Naveen", "Kristoff", "Flynn") 
 
@@ -76,7 +94,9 @@ babynames %>%
              linetype="dashed",
              size = 1,
              data = prince_yrs) + 
-  labs(title = "Disney Princes", subtitle = "Vertical Line Marks Film's Release")
+  labs(title = "Disney Princes", subtitle = "Vertical Line Marks Film's Release", y = "babies")
+
+ggsave("disneyprinces.png")
 ```
 
 
@@ -505,6 +525,24 @@ babynames %>%
   filter(year==2010, sex == "M") %>% 
   arrange(desc(n))
 
+```
+```{r}
+bewitched <- c("Samantha", "Darren", "Endora", "Tabitha")
+
+
+babynames %>%
+  filter(name %in% bewitched) %>%
+  filter(year>=1940) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1964),
+             linetype = "dashed",
+             color = "red",
+             ) + 
+  labs(title = "Bewitched", subtitle = "Bewitched began airing in 1964", y = "babies")
+
+ggsave("bewitched.png")
 ```
 
 
