@@ -24,7 +24,9 @@ library(babynames)
 
 
 
+## Disney
 
+#Princess
 
 ```{r}
 princess_names <- c("Ariel", "Belle", "Jasmine", "Mulan", "Tiana", "Merida", "Elsa", "Giselle")
@@ -69,7 +71,7 @@ babynames %>%
   geom_point(mapping = aes(x = year, y = n))
 ```
 
-
+#Prince
 
 ```{r}
 prince_names <- c("Eric", "Adam", "Aladdin", "Shang", "Naveen", "Kristoff", "Flynn") 
@@ -100,7 +102,7 @@ ggsave("disneyprinces.png")
 ```
 
 
-
+## Harry Potter
 
 ```{r}
 
@@ -251,6 +253,7 @@ ggsave("hp7.png")
 
 ```
 
+## Twilight
  
 
 ```{r}
@@ -283,6 +286,9 @@ babynames %>%
 ggsave("twilight.png")
 
 ```
+
+## 50 Shades
+
 ```{r}
 babynames %>%
   #filter(name %in% c("Madison", "Hermione", "Chandler", "Cady", "Barack", "Diana", "Heather", "Elle", "Ariel")) %>%
@@ -304,7 +310,7 @@ babynames %>%
 ggsave("50shades.png")
 ```
 
-
+## Madison
 
 ```{r}
 
@@ -377,6 +383,7 @@ avg_boys_mad_postsplash <- babynames %>%
   
 ```
 
+##Buffy
 
 ```{r}
 
@@ -405,7 +412,7 @@ ggsave("buffy.png")
 ```
 
 
-
+## Friends
 
 ```{r}
 
@@ -455,6 +462,7 @@ babynames %>%
 
 ```
 
+## Kardashians
 
 ```{r}
 babynames %>%
@@ -479,12 +487,16 @@ babynames %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name))
 
+ggsave("CKhloe.png")
+
 
 babynames %>%
   filter(name %in% c("Courtney", "Kourtney")) %>%
   filter(year>=1990, sex=="F") %>% 
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name))
+
+ggsave("CKourtney.png")
 
 ```
 ```{r}
@@ -512,6 +524,7 @@ babynames %>%
 ggsave("dash2ndgen.png")
 ```
 
+## Bewitched
 
 ```{r}
 babynames %>% 

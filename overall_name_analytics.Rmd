@@ -65,7 +65,70 @@ boys_names <- babynames %>%
   filter(sex=='M') %>%
   select(name)  
 unisex_names <- intersect(boys_names, girls_names)
+
+unisex_names <- unisex_names$name
+
 ```
+
+```{r}
+unisex_use <- babynames %>% 
+  filter(name %in% unisex_names)
+
+
+unisex_ratios <- unisex_use %>% 
+  group_by(name, sex) %>% 
+  summarise(n = sum(n)) %>% 
+  pivot_wider(names_from = sex, values_from = n) %>% 
+  rename("female" = F, "male" = M) %>% 
+  mutate(ratio = female/male) %>% 
+  summarise(name, male, female, ratio = round(ratio, 3)) %>% 
+  filter(ratio>=0.2, ratio<=5)
+
+unisex_ratiosFM <- unisex_use %>% 
+  group_by(name, sex) %>% 
+  summarise(n = sum(n)) %>% 
+  pivot_wider(names_from = sex, values_from = n) %>% 
+  rename("female" = F, "male" = M) %>% 
+  mutate(ratio = female/male) %>% 
+  summarise(name, male, female, ratio = round(ratio, 3)) 
+
+
+unisex_ratiosMF <- unisex_use %>% 
+  group_by(name, sex) %>% 
+  summarise(n = sum(n)) %>% 
+  pivot_wider(names_from = sex, values_from = n) %>% 
+  rename("female" = F, "male" = M) %>% 
+  mutate(ratio = male/female) %>% 
+  summarise(name, male, female, ratio = round(ratio, 3))
+
+unisex_ratiosFM %>% 
+  filter(ratio>1, ratio<5) %>% 
+  #arrange(desc(male)) %>% 
+  ggplot() + 
+  geom_histogram(mapping = aes(x = ratio), bins = 50)
+
+unisex_ratiosMF %>% 
+  filter(ratio>1, ratio<5) %>% 
+  #mutate(ratio = male/female) %>% 
+  #arrange(name)
+  ggplot() + 
+  geom_histogram(mapping = aes(x = ratio), binwidth = 0.1)
+
+unisex_ratiosFM %>% 
+  filter(ratio>1, ratio<5) %>% 
+  arrange(ratio) 
+  
+
+unisex_ratiosMF %>% 
+  arrange(desc(ratio)) %>% 
+  filter(ratio>1, ratio<5)
+
+```
+
+
+
+
+
 
 
 ```{r}
