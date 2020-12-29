@@ -479,12 +479,16 @@ babynames %>%
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name))
 
+ggsave("CKhloe.png")
+
 
 babynames %>%
   filter(name %in% c("Courtney", "Kourtney")) %>%
   filter(year>=1990, sex=="F") %>% 
   ggplot() +
   geom_point(mapping = aes( x=year, y = n, color = name))
+
+ggsave("CKourtney.png")
 
 ```
 ```{r}
