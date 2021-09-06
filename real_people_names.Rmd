@@ -584,8 +584,8 @@ babynames %>%
   filter(name %in% c("Blake", "James" )) %>%
   filter(year>=1990) %>%
   ggplot() +
-  geom_point(mapping = aes( x=year, y = n, color = name)) + 
-  facet_grid(sex~name, scales = "free_y") + 
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_grid(sex~name, scales = "free") + 
     geom_vline(aes(xintercept = 2014),
              linetype = "dashed",
              color = "navy")
@@ -627,3 +627,19 @@ babynames %>%
              color = "navy")
 
 ```
+
+```{r}
+```{r}
+babynames %>%
+  filter(name %in% c("Billy" )) %>%
+  filter(year>=1950) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~sex, scales = "free_y") + 
+    geom_vline(aes(xintercept = c(1976)),
+             linetype = "dashed",
+             color = "navy")
+
+```
+```
+
