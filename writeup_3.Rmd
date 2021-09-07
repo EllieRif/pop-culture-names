@@ -640,6 +640,16 @@ babynames %>%
 
 
 #Not enough movement for causality with Annette
+
+babynames %>%
+  filter(name %in% c("Ella"), sex == "F") %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n)) +
+  geom_vline(aes(xintercept = 2001),
+             linetype = "dashed",
+             size = 1,
+            ) + 
+     labs(title = "Girls Named Ella: Reese Witherspoon's Influence", subtitle = "Elle Woods in 2001's Legally Blonde ", y = "babies")
    
 ```
 
@@ -733,7 +743,58 @@ babynames %>%
   filter(name == "Endora", year >=1960, sex == "F")
 
 
+babynames %>%
+  filter(name %in% c("Leonardo")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
 
+babynames %>%
+  filter(name %in% c("Leo")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
+
+babynames %>%
+  filter(name %in% c("Rose")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
+
+babynames %>%
+  filter(name %in% c("Emma")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
+
+babynames %>%
+  filter(name %in% c("Elinor")) %>%
+  filter(year>=1980) %>%
+  ggplot() +
+  geom_point(mapping = aes( x=year, y = n, color = sex)) + 
+  facet_wrap(~name, scales = "free_y") + 
+  geom_vline(aes(xintercept = 1997),
+             linetype = "dashed",
+             color = "navy")
+
+babynames %>% filter(name == "Rose", year>=1995)
+babynames %>% filter(name == "Leonardo", year>=1995)
 ```
 
 
